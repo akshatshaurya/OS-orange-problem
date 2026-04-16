@@ -1,0 +1,28 @@
+CC = gcc
+CFLAGS = -Wall -Wextra -O2
+LDFLAGS = -lcrypto
+
+TARGET = pes
+
+SRCS = pes.c index.c object.c commit.c tree.c
+OBJS = $(SRCS:.c=.o)
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS) $(LDFLAGS)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $<
+
+clean:
+	rm -f *.o $(TARGET)
+
+# Optional test targets (if test files exist)
+test_objects:
+	$(CC) $(CFLAGS) test_objects.c object.c $(LDFLAGS) -o test_objects
+	./test_objects
+
+test_tree:
+	$(CC) $(CFLAGS) test_tree.c tree.c index.c object.c $(LDFLAGS) -o test_tree
+	./test_tree
